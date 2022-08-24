@@ -2,9 +2,10 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import bookingReducer from "features/booking/bookingSlice";
 import { act } from "react-dom/test-utils";
 import thunk from "redux-thunk";
-
+import authReducer from "features/authentication/authSlice";
 const rootReducer = combineReducers({
   booking: bookingReducer,
+  auth: authReducer,
 });
 
 //middleware: lưu log những action được gửi lên store
