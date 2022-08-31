@@ -31,7 +31,7 @@ function App() {
           <Route path="/payment" component={Payment} />
 
           <AuthRoute path="/signin" component={SignIn} redirectPath="/" />
-          <AuthRoute path="/signup" component={SignIn} redirectPath="/" />
+          <AuthRoute path="/signup" component={Signup} redirectPath="/" />
 
           <PrivateRoute path="/movies" component={MovieManagement} />
           <Route path="*" component={PageNotFound} />
