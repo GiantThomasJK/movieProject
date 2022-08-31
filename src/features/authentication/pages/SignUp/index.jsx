@@ -56,7 +56,7 @@ function Signup() {
         data: user,
       });
 
-      console.log(res.data);
+      console.log(res.data.content);
       history.push("/signin");
     } catch (err) {
       console.log(err);

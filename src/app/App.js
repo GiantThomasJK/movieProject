@@ -8,8 +8,18 @@ import PageNotFound from "common/components/404";
 import MovieManagement from "features/movies/pages/MovieManagement/";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Header from "common/components/Header";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchProfileAction } from "features/authentication/action";
+import { AuthRoute, PrivateRoute } from "./Guard";
 
+//guard
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProfileAction);
+  });
   return (
     <div>
       <BrowserRouter>
@@ -19,9 +29,11 @@ function App() {
           <Route path="/booking" component={Booking} />
           <Route path="/detail/:id" component={Detail} />
           <Route path="/payment" component={Payment} />
-          <Route path="/signin" component={SignIn} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/movies" component={MovieManagement} />
+
+          <AuthRoute path="/signin" component={SignIn} redirectPath="/" />
+          <AuthRoute path="/signup" component={SignIn} redirectPath="/" />
+
+          <PrivateRoute path="/movies" component={MovieManagement} />
           <Route path="*" component={PageNotFound} />
           <Redirect to="/" />
         </Switch>

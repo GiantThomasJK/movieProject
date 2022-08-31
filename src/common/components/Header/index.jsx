@@ -1,15 +1,54 @@
 import React from "react";
 import styles from "./style.module.css";
 import { NavLink, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_PROFILE } from "features/authentication/action";
 
 function Header() {
-
   const history = useHistory();
+  const dispatch = useDispatch();
+  const userProfile = useSelector((state) => state.auth.profile);
+
   console.log(history);
 
-  const goToHome = () =>{
-    history.push("/")
-  }
+  const goToHome = () => {
+    history.push("/");
+  };
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    dispatch({
+      type: SET_PROFILE,
+      payload: null,
+    });
+
+    goToHome();
+  };
+
+  const renderUserInfo = () => {
+    if (userProfile) {
+      return (
+        <>
+          <a href="#">Hi, {userProfile.hoTen}</a>
+          <a href="#" onClick={handleLogout}>
+            Log out
+          </a>
+        </>
+      );
+    }
+
+    return (
+      <>
+        <NavLink activeClassName={styles.active} to="/signin">
+          Sign In
+        </NavLink>
+        <NavLink activeClassName={styles.active} to="/signup">
+          Sign Up
+        </NavLink>
+      </>
+    );
+  };
 
   return (
     <div className={styles.header}>
@@ -23,12 +62,8 @@ function Header() {
         <NavLink activeClassName={styles.active} to="/movies">
           Movies
         </NavLink>
-        <NavLink activeClassName={styles.active} to="/signin">
-          Sign in
-        </NavLink>
-        <NavLink activeClassName={styles.active} to="/signup">
-          Sign up
-        </NavLink>
+
+        {renderUserInfo()}
       </nav>
     </div>
   );

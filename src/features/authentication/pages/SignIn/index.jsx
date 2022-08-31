@@ -28,33 +28,31 @@ function SignIn() {
     },
 
     onSubmit: (values) => {
-      const newUser = { ...values };
-      signIn(newUser);
+      signIn(values);
     },
 
     validationSchema: schema,
-    validateOnChange: false,
-    validateOnBlur: true,
   });
 
   const signIn = async (user) => {
     try {
       setIsLoading(true);
-      const res = instance.request({
+      const res = await instance.request({
         url: "/api/QuanLyNguoiDung/DangNhap",
         method: "POST",
         data: user,
       });
+      console.log(res.data);
 
       const profile = { ...res.data.content };
       delete profile.accessToken;
-
       localStorage.setItem("token", res.data.content.accessToken);
+      history.push("/");
+
       dispatch({
         type: SET_PROFILE,
         payload: profile,
       });
-      history.push("/");
     } catch (err) {
       console.log(err);
     } finally {
